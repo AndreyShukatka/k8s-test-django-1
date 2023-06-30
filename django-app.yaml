@@ -17,15 +17,9 @@ spec:
         - name: container-django
           image: django_app:latest
           imagePullPolicy: IfNotPresent
-          env:
-            - name: SECRET_KEY
-              value: '123123dmasmfo23nr2ino2ngwr'
-            - name: DEBUG
-              value: 'False'
-            - name: DATABASE_URL
-              value: 'postgres://test_k8s:OwOtBep9Frut@192.168.0.103:5434/test_k8s'
-            - name: ALLOWED_HOSTS
-              value: '192.168.59.101,localhost,127.0.0.1'
+          envFrom:
+            - configMapRef:
+                name: postgres-config
           ports:
             - containerPort: 80
 
