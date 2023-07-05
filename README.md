@@ -3,6 +3,7 @@
 Докеризированный сайт на Django для экспериментов с Kubernetes.
 
 Внутри контейнера Django запускается с помощью Nginx Unit, не путать с Nginx. Сервер Nginx Unit выполняет сразу две функции: как веб-сервер он раздаёт файлы статики и медиа, а в роли сервера-приложений он запускает Python и Django. Таким образом Nginx Unit заменяет собой связку из двух сервисов Nginx и Gunicorn/uWSGI. [Подробнее про Nginx Unit](https://unit.nginx.org/).
+На примере установки используется адрес`http://star-burger.test`
 
 ## Как запустить dev-версию
 
@@ -60,6 +61,17 @@ ALLOWED_HOSTS=Список ваших хостов
   - Далее прописываем наш `ConfigMap` в системе с помощью команды:
 ```shell
 kubectl create configmap postgres-config --from-env-file=postgres-config.properties
+```
+5. Настройте Ingress:
+- Установите
+```shell
+kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
+```
+- В файле `ingress-host.yaml` Меняем `host` на свой
+- Пропишите на своей машине в `/etc/hosts` (для linux) домен `star-burger.test`, сопоставить с IP виртуальной машины 
+узнать ip c помощью команды:
+```shell
+- minikube ip)
 ```
 5. Запустить манифесты:
 ```shell
