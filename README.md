@@ -73,23 +73,27 @@ kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
 ```shell
 - minikube ip)
 ```
-5. Запустить манифесты:
+6. Запустить манифесты:
 ```shell
 kubectl apply -f django-app.yaml
 ```
-6. Проверить запущенные поды:
+7. Проверить запущенные поды:
 ```shell
 kubectl get pods
 ```
-7. Зайти в shell 
+8. Зайти в shell 
 ```shell
 kubectl exec --stdin --tty <НАЗВАНИЕ ПОДА>> -- sh
 ```
-8. Сделать миграцию
+9. Сделать миграцию
 ```python
 ./manage.py migrate
 ```
-9. Создать суперпользователя
+10. Создать суперпользователя
 ```python
 ./manage.py createsuperuser
+```
+11. Создайте cronjob, который очищает сессии django каждый месяц.
+```shell
+kubectl apply -f clearsessions.yaml
 ```
