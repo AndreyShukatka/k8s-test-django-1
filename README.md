@@ -42,13 +42,21 @@ $ docker-compose run web ./manage.py createsuperuser
 [VirtualBox](https://www.virtualbox.org) - для Linux\Windows\MacOS на процессорах Интел.
 [DockerDesktop](https://www.docker.com) - MacOS для Mac на M1.
 
-2. Запустите PostgresSQL
-3. Создайте базу данных в поде Postgresql:
+2. Откройте файл values.yaml в директории проекта и заполните:
 ```
-CREATE DATABASE {DB_NAME};
-CREATE USER {DB_USER} WITH ENCRYPTED PASSWORD {PASSWORD};
-GRANT ALL PRIVILEGES ON DATABASE {DB_NAME} TO {DB_USER};
+auth:
+  enablePostgresUser: true
+  postgresPassword: ваш   postgres пароль
+  username: юзер
+  password: пароль для юзера
+  database: название базы данных
 ```
+3. Установите [Helm](https://helm.sh/)
+```shell
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install postgres -f values.yaml bitnami/postgresql
+```
+Helm установит и запустит `postgresql`, а также создаст пользователя по параметрам, указанным в `values.yaml`.
 4. Внести переменные окружения:
   - Создаем файл с названием `postgres-config.properties`
   - Записываем в него наши переменные окружения в формате:
@@ -58,6 +66,8 @@ DEBUG=False или True
 DATABASE_URL=Ссылка на вашу базу данных PostgreSQL
 ALLOWED_HOSTS=Список ваших хостов
 ```
+Ссылка на базу выглядит следующим образом: postgres://username:password@host:port/db_name
+пример ссылки: `postgres://slon:slon@postgres-postgresql:5432/django`
   - Далее прописываем наш `ConfigMap` в системе с помощью команды:
 ```shell
 kubectl create configmap postgres-config --from-env-file=postgres-config.properties
@@ -71,7 +81,7 @@ kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
 - Пропишите на своей машине в `/etc/hosts` (для linux) домен `star-burger.test`, сопоставить с IP виртуальной машины 
 узнать ip c помощью команды:
 ```shell
-- minikube ip)
+- minikube ip
 ```
 6. Запустить манифесты:
 ```shell

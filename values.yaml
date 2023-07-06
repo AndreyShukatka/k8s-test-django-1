@@ -1,0 +1,6 @@
+auth:
+  enablePostgresUser: true
+  postgresPassword: ваш   postgres пароль
+  username: юзер
+  password: пароль для юзера
+  database: название базы данных
